@@ -47,40 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const toggleY = (target, y) => gsap.to(target, { yPercent: y });
 
   const mm = gsap.matchMedia();
-
-  const triggerElement = document.querySelector("[hero-content]");
-  const scrollTriggerElement = document.querySelector("[service-hero-trigger]");
-
-  function initHeroAnimation() {
-    if (!triggerElement || !scrollTriggerElement) return;
-
-    // Kill existing ScrollTrigger for this element, if any
-    ScrollTrigger.getAll().forEach((trigger) => {
-      if (trigger.trigger === scrollTriggerElement) {
-        trigger.kill();
-      }
-    });
-
-    const targetHeight = triggerElement.offsetHeight || window.innerHeight;
-
-    gsap.fromTo(
-      triggerElement,
-      { scale: 1, filter: "blur(0px)" },
-      {
-        scale: 0.9,
-        filter: "blur(10px)",
-        ease: "none",
-        scrollTrigger: {
-          trigger: scrollTriggerElement,
-          start: `top ${targetHeight}`,
-          end: "top top",
-          scrub: true,
-          markers: true,
-        },
-      }
-    );
-  }
-
+  
   // Initialize once
   initHeroAnimation();
 
