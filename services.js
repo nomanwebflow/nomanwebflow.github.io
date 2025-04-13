@@ -49,24 +49,47 @@ document.addEventListener("DOMContentLoaded", () => {
   const mm = gsap.matchMedia();
 
   const triggerElement = document.querySelector("[hero-content]");
-  const targetHeight = triggerElement?.offsetHeight || window.innerHeight;
+  const scrollTriggerElement = document.querySelector("[service-hero-trigger]");
 
-  gsap.fromTo(
-    "[hero-content]",
-    { scale: 1, filter: "blur(0px)" },
-    {
-      scale: 0.9,
-      filter: "blur(10px)",
-      ease: "none",
-      markers: true,
-      scrollTrigger: {
-        trigger: "[service-hero-trigger]",
-        start: `top ${targetHeight}px`,
-        end: "top top",
-        scrub: true,
-      },
-    }
-  );
+  function initHeroAnimation() {
+    if (!triggerElement || !scrollTriggerElement) return;
+
+    // Kill existing ScrollTrigger for this element, if any
+    ScrollTrigger.getAll().forEach((trigger) => {
+      if (trigger.trigger === scrollTriggerElement) {
+        trigger.kill();
+      }
+    });
+
+    const targetHeight = triggerElement.offsetHeight || window.innerHeight;
+
+    gsap.fromTo(
+      triggerElement,
+      { scale: 1, filter: "blur(0px)" },
+      {
+        scale: 0.9,
+        filter: "blur(10px)",
+        ease: "none",
+        scrollTrigger: {
+          trigger: scrollTriggerElement,
+          start: `top+=${targetHeight} top`,
+          end: "top top",
+          scrub: true,
+          markers: true,
+        },
+      }
+    );
+  }
+
+  // Initialize once
+  initHeroAnimation();
+
+  // Re-initialize on resize
+  window.addEventListener("resize", initHeroAnimation);
+
+  // Observe content height changes
+  const resizeObserver = new ResizeObserver(initHeroAnimation);
+  if (triggerElement) resizeObserver.observe(triggerElement);
 
   // Mobile scroll interactions
   mm.add("(max-width: 767px)", () => {
@@ -118,7 +141,6 @@ document.addEventListener("DOMContentLoaded", () => {
       onLeave: () => gsap.to(tabsNav, { y: "-250%" }),
       onEnterBack: () => gsap.to(tabsNav, { y: "0%" }),
     });
-
 
     ScrollTrigger.create({
       trigger: serviceSection,
