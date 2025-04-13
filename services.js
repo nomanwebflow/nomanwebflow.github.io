@@ -1,3 +1,5 @@
+alert("Hello"); 
+
 // Optional: Remove hash from URL
 function removeHash() {
   history.replaceState(
