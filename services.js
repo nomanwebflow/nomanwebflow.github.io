@@ -64,7 +64,7 @@ function removeHash() {
           start: `top ${targetHeight}px`,
           end: "top top",
           scrub: true,
-          markers: true // FIXED: Moved markers to ScrollTrigger config
+          markers: true,
         },
       }
     );
