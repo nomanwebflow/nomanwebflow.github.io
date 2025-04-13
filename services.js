@@ -96,16 +96,6 @@
         trigger: serviceSection,
         start: "top center",
         end: "bottom top",
-        onEnter: () => toggleY(tabsNav, 0),
-        onLeave: () => toggleY(tabsNav, 150),
-        onEnterBack: () => toggleY(tabsNav, 0),
-        onLeaveBack: () => toggleY(tabsNav, 150),
-      });
-
-      ScrollTrigger.create({
-        trigger: serviceSection,
-        start: "top center",
-        end: "bottom top",
         onEnter: () => toggleY(nav, -150),
         onLeave: () => toggleY(nav, 0),
         onEnterBack: () => toggleY(nav, -150),
