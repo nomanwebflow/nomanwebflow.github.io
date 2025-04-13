@@ -25,6 +25,25 @@ window.addEventListener("load", setButtonWidths);
 window.addEventListener("resize", setButtonWidths);
 
 document.addEventListener("DOMContentLoaded", () => {
+  const triggerElement = document.querySelector("[hero-content]");
+  const targetHeight = triggerElement?.offsetHeight || window.innerHeight;
+
+  gsap.fromTo(
+    "[hero-content]",
+    { scale: 1, filter: "blur(0px)" },
+    {
+      scale: 0.9,
+      filter: "blur(10px)",
+      ease: "none",
+      scrollTrigger: {
+        trigger: "[service-hero-trigger]",
+        start: `top ${targetHeight}px`,
+        end: "top top",
+        scrub: true,
+      },
+    }
+  );
+
   // Click event for service tab buttons
   document.querySelectorAll(".service_tab_button").forEach((btn) => {
     btn.addEventListener("click", () => {

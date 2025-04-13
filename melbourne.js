@@ -208,25 +208,6 @@ document.addEventListener("DOMContentLoaded", () => {
   CustomEase.create("main", "0.65, 0.01, 0.05, 0.99");
   gsap.defaults({ ease: "main", duration: 1 });
 
-  const triggerElement = document.querySelector("[hero-content]");
-  const targetHeight = triggerElement?.offsetHeight || 650; // fallback if not found
-
-  gsap.fromTo(
-    "[hero-content]",
-    { scale: 1, filter: "blur(0px)" },
-    {
-      scale: 0.9,
-      filter: "blur(10px)",
-      ease: "none",
-      scrollTrigger: {
-        trigger: "[service-hero-trigger]",
-        start: `top ${targetHeight}px`,
-        end: "top top",
-        scrub: true,
-      },
-    }
-  );
-
   gsap.fromTo(
     "[data-scale-up]",
     { scale: "0.5", rotate: "10", autoAlpha: "0" },
