@@ -106,7 +106,6 @@ document.addEventListener("DOMContentLoaded", () => {
           start: `top ${getTargetHeight()}px}`,
           end: "top top",
           scrub: true,
-          markers: true
         },
       }
     );
