@@ -59,6 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
       scale: 0.9,
       filter: "blur(10px)",
       ease: "none",
+      markers: true,
       scrollTrigger: {
         trigger: "[service-hero-trigger]",
         start: `top ${targetHeight}px`,
