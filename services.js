@@ -119,8 +119,6 @@ function removeHash() {
         end: "bottom 20%",    // Ends when the bottom is at 20% of viewport
         onEnter: () => toggleY(tabsNav, -250),  // Hide when scrolling past bottom
         onEnterBack: () => toggleY(tabsNav, 0), // Show when scrolling back up
-        onLeave: () => toggleY(tabsNav, -250),  // Keep hidden
-        onLeaveBack: () => toggleY(tabsNav, 0), // Keep visible
       });
   
       // FIXED: Removed unnecessary ScrollTriggers that were conflicting
