@@ -59,12 +59,12 @@ function removeHash() {
         scale: 0.9,
         filter: "blur(10px)",
         ease: "none",
+        markers: true,
         scrollTrigger: {
           trigger: "[service-hero-trigger]",
           start: `top ${targetHeight}px`,
           end: "top top",
           scrub: true,
-          markers: true,
         },
       }
     );
@@ -112,21 +112,26 @@ function removeHash() {
     mm.add("(min-width: 768px)", () => {
       if (!serviceSection || !tabsNav || !nav) return;
   
-      // FIXED: Changed to only trigger when at the bottom of service section
       ScrollTrigger.create({
         trigger: serviceSection,
-        start: "bottom 70%",  // Triggers when the bottom of service section crosses 70% of viewport
-        end: "70% bottom",    // Ends when the bottom is at 20% of viewport
-        onEnter: () => toggleY(tabsNav, -250),  // Hide when scrolling past bottom
-        onEnterBack: () => toggleY(tabsNav, 0), // Show when scrolling back up
+        start: "bottom 70%",
+        end: "70% bottom",
+        onLeave: () => toggleY(tabsNav, -250),
+        onEnterBack: () => toggleY(tabsNav, 0),
       });
   
-      // FIXED: Removed unnecessary ScrollTriggers that were conflicting
-      // Only keeping the one that handles nav visibility
       ScrollTrigger.create({
         trigger: serviceSection,
-        start: "bottom 80%", // Changed to bottom instead of top
-        end: "bottom 20%",
+        start: "top center",
+        end: "bottom top",
+        onEnterBack: () => toggleY(tabsNav, 0),
+        onLeaveBack: () => toggleY(tabsNav, -250),
+      });
+  
+      ScrollTrigger.create({
+        trigger: serviceSection,
+        start: "top center",
+        end: "bottom top",
         onEnter: () => toggleY(nav, -150),
         onLeave: () => toggleY(nav, 0),
         onEnterBack: () => toggleY(nav, -150),
