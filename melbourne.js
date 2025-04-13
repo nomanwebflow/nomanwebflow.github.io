@@ -1,4 +1,109 @@
 document.addEventListener("click", function (event) {
+  (function () {
+    const trigger = document.querySelector(
+      '[data-form-end="contact-success-trigger"]'
+    );
+    const target = document.querySelector('[data-form-end="contact-success"]');
+
+    if (!trigger || !target) return;
+
+    const observer = new MutationObserver(() => {
+      if (getComputedStyle(trigger).display === "block") {
+        const lottie = target.querySelector(".lottie-trigger");
+        if (lottie) lottie.click();
+
+        trigger.style.display = "none";
+        target.classList.add("is-submitted");
+      }
+    });
+
+    observer.observe(trigger, {
+      attributes: true,
+      attributeFilter: ["style"],
+    });
+  })();
+
+  (function () {
+    const trigger = document.querySelector(
+      '[data-form-end="contact-error-trigger"]'
+    );
+    const target = document.querySelector('[data-form-end="contact-error"]');
+
+    if (!trigger || !target) return;
+
+    const observer = new MutationObserver(() => {
+      if (getComputedStyle(trigger).display === "block") {
+        const lottie = target.querySelector(".lottie-trigger");
+        if (lottie) lottie.click();
+
+        trigger.style.display = "none";
+        target.classList.add("is-not-submitted");
+      }
+    });
+
+    observer.observe(trigger, {
+      attributes: true,
+      attributeFilter: ["style"],
+    });
+  })();
+
+  (function () {
+    const trigger = document.querySelector(
+      '[data-form-end="newsletter-success-trigger"]'
+    );
+    const target = document.querySelector(
+      '[data-form-end="newsletter-success"]'
+    );
+
+    if (!trigger || !target) return;
+
+    const observer = new MutationObserver(() => {
+      if (getComputedStyle(trigger).display === "block") {
+        const lottie = target.querySelector(".lottie-trigger");
+        if (lottie) lottie.click();
+
+        trigger.style.display = "none";
+        target.classList.add("is-submitted");
+      }
+    });
+
+    observer.observe(trigger, {
+      attributes: true,
+      attributeFilter: ["style"],
+    });
+  })();
+
+  (function () {
+    const trigger = document.querySelector(
+      '[data-form-end="newsletter-error-trigger"]'
+    );
+    const target = document.querySelector('[data-form-end="newsletter-error"]');
+
+    if (!trigger || !target) return;
+
+    const observer = new MutationObserver(() => {
+      if (getComputedStyle(trigger).display === "block") {
+        const lottie = target.querySelector(".lottie-trigger");
+        if (lottie) lottie.click();
+
+        trigger.style.display = "none";
+        target.classList.add("is-not-submitted");
+      }
+    });
+
+    observer.observe(trigger, {
+      attributes: true,
+      attributeFilter: ["style"],
+    });
+  })();
+
+  $(".form_popup_overlay, [data-error-close]").on("click", function () {
+    $(this).closest(".form_popup_component").removeClass("is-submitted");
+    $(".form_popup_component").removeClass("is-not-submitted");
+    $(".w-form-done").css("display", "none");
+    $(".w-form-fail").css("display", "none");
+  });
+
   const target = event.target.closest("[data-link-copy]");
   if (target && target._tippy) {
     navigator.clipboard
