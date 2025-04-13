@@ -72,7 +72,7 @@ document.addEventListener("DOMContentLoaded", () => {
         ease: "none",
         scrollTrigger: {
           trigger: scrollTriggerElement,
-          start: `top+=${targetHeight} top`,
+          start: `top ${targetHeight}`,
           end: "top top",
           scrub: true,
           markers: true,
