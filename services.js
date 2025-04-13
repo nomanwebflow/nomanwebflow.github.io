@@ -87,22 +87,33 @@ document.addEventListener("DOMContentLoaded", () => {
     onLeaveBack: () => tabsNav?.classList.remove("is-fixed"),
   });
 
+  const triggerElement = document.querySelector("[hero-content]");
+
+  function getTargetHeight() {
+    return triggerElement?.offsetHeight || 650;
+  }
+
   gsap.fromTo(
     "[hero-content]",
     { scale: 1, filter: "blur(0px)" },
     {
-      scale: 0.8,
+      scale: 0.9,
       filter: "blur(10px)",
       ease: "none",
       scrollTrigger: {
         trigger: "[service-hero-trigger]",
-        start: "top 70%",
+        start: "top ${getTargetHeight()}",
         end: "top top",
         scrub: true,
         markers: true
       },
     }
   );
+
+  // Watch for resizes or layout changes and refresh ScrollTrigger
+  window.addEventListener("resize", () => {
+    ScrollTrigger.refresh();
+  });
 
   // Optional: also refresh on content/image load if height might change
   window.addEventListener("load", () => {
