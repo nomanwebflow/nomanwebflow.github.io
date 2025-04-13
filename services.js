@@ -325,3 +325,10 @@ function init() {
 
 // Initialize when DOM is ready
 document.addEventListener("DOMContentLoaded", init);
+
+window.addEventListener("load", function () {
+  const footer = document.querySelector(".service_hero_section");
+  if (footer && footer.offsetHeight > window.innerHeight) {
+    footer.style.position = "relative";
+  }
+});

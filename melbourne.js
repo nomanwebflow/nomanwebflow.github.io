@@ -511,42 +511,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Parallax Layers Implementation
-  const parallaxTrigger = document.querySelector("[data-parallax-layers]");
-  if (parallaxTrigger) {
-    let tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: parallaxTrigger,
-        start: "0% 50%",
-        end: "100% 0%",
-        scrub: 0,
-      },
-    });
-
-    const layers = [
-      { layer: "1", yPercent: 70 },
-      { layer: "2", yPercent: 55 },
-      { layer: "3", yPercent: 40 },
-      { layer: "4", yPercent: 20 },
-    ];
-
-    layers.forEach((layerObj, idx) => {
-      const layerElements = parallaxTrigger.querySelectorAll(
-        `[data-parallax-layer="${layerObj.layer}"]`
-      );
-      if (layerElements.length > 0) {
-        tl.to(
-          layerElements,
-          {
-            yPercent: layerObj.yPercent,
-            ease: "none",
-          },
-          idx === 0 ? undefined : "<"
-        );
-      }
-    });
-  }
-
   // Resize Handling
   const refreshScrollTrigger = debounce(() => ScrollTrigger.refresh());
   const resizeObserver = new ResizeObserver(() => refreshScrollTrigger());
@@ -646,14 +610,6 @@ $("[data-accordion-trigger]").on("click", function () {
   let index = $(this).index("[data-accordion-trigger]"); // Get the index within similar elements
   $(".about_aproach_img-wrap").removeClass("is-active");
   $(".about_aproach_img-wrap").eq(index).addClass("is-active");
-});
-
-$(".form_input").on("focus", function () {
-  $(this).siblings(".form_input-bg").css("opacity", "1");
-});
-
-$(".form_input").on("focusout", function () {
-  $(this).siblings(".form_input-bg").css("opacity", "0");
 });
 
 $(".menu-inner a").on("click", function () {
