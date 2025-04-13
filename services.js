@@ -25,24 +25,6 @@ window.addEventListener("load", setButtonWidths);
 window.addEventListener("resize", setButtonWidths);
 
 document.addEventListener("DOMContentLoaded", () => {
-  const triggerElement = document.querySelector("[hero-content]");
-  const targetHeight = triggerElement?.offsetHeight || window.innerHeight;
-
-  gsap.fromTo(
-    "[hero-content]",
-    { scale: 1, filter: "blur(0px)" },
-    {
-      scale: 0.9,
-      filter: "blur(10px)",
-      ease: "none",
-      scrollTrigger: {
-        trigger: "[service-hero-trigger]",
-        start: `top ${targetHeight}px`,
-        end: "top top",
-        scrub: true,
-      },
-    }
-  );
 
   // Click event for service tab buttons
   document.querySelectorAll(".service_tab_button").forEach((btn) => {
@@ -66,6 +48,25 @@ document.addEventListener("DOMContentLoaded", () => {
   const toggleY = (target, y) => gsap.to(target, { yPercent: y });
 
   const mm = gsap.matchMedia();
+
+  const triggerElement = document.querySelector("[hero-content]");
+  const targetHeight = triggerElement?.offsetHeight || window.innerHeight;
+
+  gsap.fromTo(
+    "[hero-content]",
+    { scale: 1, filter: "blur(0px)" },
+    {
+      scale: 0.9,
+      filter: "blur(10px)",
+      ease: "none",
+      scrollTrigger: {
+        trigger: "[service-hero-trigger]",
+        start: `top ${targetHeight}px`,
+        end: "top top",
+        scrub: true,
+      },
+    }
+  );
 
   // Mobile scroll interactions
   mm.add("(max-width: 767px)", () => {
@@ -122,8 +123,6 @@ document.addEventListener("DOMContentLoaded", () => {
       trigger: serviceSection,
       start: "top center",
       end: "bottom top",
-      onEnter: () => toggleY(tabsNav, 0),
-      onLeave: () => toggleY(tabsNav, -250),
       onEnterBack: () => toggleY(tabsNav, 0),
       onLeaveBack: () => toggleY(tabsNav, -250),
     });
