@@ -142,7 +142,12 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll(".service_section").forEach((section) => {
     const buttons = section.querySelectorAll(".service_tab_button");
     const bgElement = section.querySelector(".service_tab_bg");
-
+    
+    // Set z-index of -1 on the background element
+    if (bgElement) {
+      bgElement.style.zIndex = "-1";
+    }
+  
     const moveBgTo = (button) => {
       if (!button || !bgElement || button === bgElement.parentNode) return;
       const state = Flip.getState(bgElement);
@@ -154,7 +159,7 @@ document.addEventListener("DOMContentLoaded", () => {
         absolute: true,
       });
     };
-
+  
     const tabObserver = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
         if (
@@ -166,14 +171,14 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
     });
-
+  
     buttons.forEach((btn) => {
       tabObserver.observe(btn, {
         attributes: true,
         attributeFilter: ["class"],
       });
     });
-
+  
     const current = section.querySelector(".service_tab_button.w--current");
     if (current) moveBgTo(current);
   });
