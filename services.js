@@ -116,7 +116,7 @@ function removeHash() {
       ScrollTrigger.create({
         trigger: serviceSection,
         start: "bottom 70%",  // Triggers when the bottom of service section crosses 70% of viewport
-        end: "bottom 20%",    // Ends when the bottom is at 20% of viewport
+        end: "70% bottom",    // Ends when the bottom is at 20% of viewport
         onEnter: () => toggleY(tabsNav, -250),  // Hide when scrolling past bottom
         onEnterBack: () => toggleY(tabsNav, 0), // Show when scrolling back up
       });
