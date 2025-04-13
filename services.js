@@ -102,7 +102,7 @@ document.addEventListener("DOMContentLoaded", () => {
       ease: "none",
       scrollTrigger: {
         trigger: "[service-hero-trigger]",
-        start: () => `top ${getTargetHeight()}px`,
+        start: "top ${getTargetHeight()}px",
         end: "top top",
         scrub: true,
         invalidateOnRefresh: true, // ensures fresh start value on resize/refresh
