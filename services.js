@@ -105,7 +105,8 @@ document.addEventListener("DOMContentLoaded", () => {
         start: "top ${getTargetHeight()}px",
         end: "top top",
         scrub: true,
-        invalidateOnRefresh: true, // ensures fresh start value on resize/refresh
+        invalidateOnRefresh: true, 
+        markers: true,
       },
     }
   );
