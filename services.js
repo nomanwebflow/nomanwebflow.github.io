@@ -92,29 +92,37 @@ document.addEventListener("DOMContentLoaded", () => {
   function getTargetHeight() {
     return triggerElement?.offsetHeight || 650;
   }
-
-  gsap.fromTo(
-    "[hero-content]",
-    { scale: 1, filter: "blur(0px)" },
-    {
-      scale: 0.9,
-      filter: "blur(10px)",
-      ease: "none",
-      scrollTrigger: {
-        trigger: "[service-hero-trigger]",
-        start: "top ${getTargetHeight()}",
-        end: "top top",
-        scrub: true,
-        markers: true
-      },
-    }
-  );
-
-  // Watch for resizes or layout changes and refresh ScrollTrigger
+  
+  function initAnimation() {
+    gsap.fromTo(
+      "[hero-content]",
+      { scale: 1, filter: "blur(0px)" },
+      {
+        scale: 0.9,
+        filter: "blur(10px)",
+        ease: "none",
+        scrollTrigger: {
+          trigger: "[service-hero-trigger]",
+          start: `top ${getTargetHeight()}`,
+          end: "top top",
+          scrub: true,
+          markers: true
+        },
+      }
+    );
+  }
+  
+  // Initial setup
+  initAnimation();
+  
+  // Refresh on resize
   window.addEventListener("resize", () => {
+    ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    initAnimation();
     ScrollTrigger.refresh();
   });
 
+   
   // Optional: also refresh on content/image load if height might change
   window.addEventListener("load", () => {
     ScrollTrigger.refresh();
