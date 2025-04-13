@@ -102,11 +102,11 @@ document.addEventListener("DOMContentLoaded", () => {
       ease: "none",
       scrollTrigger: {
         trigger: "[service-hero-trigger]",
-        start: "bottom ${getTargetHeight()}px",
+        start: "top 70%",
         end: "top top",
         scrub: true,
         invalidateOnRefresh: true, 
-        markers: true,
+        markers: true
       },
     }
   );
