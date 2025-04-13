@@ -1,5 +1,3 @@
-alert("Hello"); 
-
 // Optional: Remove hash from URL
 function removeHash() {
   history.replaceState(
@@ -51,85 +49,177 @@ document.addEventListener("DOMContentLoaded", () => {
   const mm = gsap.matchMedia();
 
   const triggerElement = document.querySelector("[hero-content]");
-  const targetHeight = triggerElement?.offsetHeight || window.innerHeight;
+  const scrollTriggerElement = document.querySelector("[service-hero-trigger]");
 
-  gsap.fromTo(
-    "[hero-content]",
-    { scale: 1, filter: "blur(0px)" },
-    {
-      scale: 0.9,
-      filter: "blur(10px)",
-      ease: "none",
-      markers: true,
-      scrollTrigger: {
-        trigger: "[service-hero-trigger]",
-        start: `top ${targetHeight}px`,
-        end: "top top",
-        scrub: true,
-      },
-    }
-  );
+  function initHeroAnimation() {
+    if (!triggerElement || !scrollTriggerElement) return;
+
+    // Kill existing ScrollTrigger for this element, if any
+    ScrollTrigger.getAll().forEach((trigger) => {
+      if (trigger.trigger === scrollTriggerElement) {
+        trigger.kill();
+      }
+    });
+
+    const targetHeight = triggerElement.offsetHeight || window.innerHeight;
+
+    gsap.fromTo(
+      triggerElement,
+      { scale: 1, filter: "blur(0px)" },
+      {
+        scale: 0.9,
+        filter: "blur(10px)",
+        ease: "none",
+        scrollTrigger: {
+          trigger: scrollTriggerElement,
+          start: `top+=${targetHeight} top`,
+          end: "top top",
+          scrub: true,
+          markers: true,
+        },
+      }
+    );
+  }
+
+  // Initialize once
+  initHeroAnimation();
+
+  // Re-initialize on resize
+  window.addEventListener("resize", initHeroAnimation);
+
+  // Observe content height changes
+  const resizeObserver = new ResizeObserver(initHeroAnimation);
+  if (triggerElement) resizeObserver.observe(triggerElement);
 
   // Mobile scroll interactions
   mm.add("(max-width: 767px)", () => {
     if (!serviceSection || !tabsNav || !nav) return;
 
-    // Initialize position and hide class
-    gsap.set(tabsNav, { yPercent: 150 });
+    // Clean up any existing animations
+    gsap.killTweensOf(tabsNav);
+    ScrollTrigger.getAll().forEach(t => t.trigger === tabsNav && t.kill());
+
+    // Initialize position with more reasonable values
+    gsap.set(tabsNav, { yPercent: 100 });
     tabsNav.classList.add("hide-chatbot");
 
-    ScrollTrigger.create({
+    const scrollTrigger = ScrollTrigger.create({
       trigger: serviceSection,
       start: "top 60",
       end: "bottom bottom",
       onEnter: () => {
-        toggleY(tabsNav, 0);
-        tabsNav.classList.add("hide-chatbot");
+        gsap.to(tabsNav, {
+          yPercent: 0,
+          duration: 0.3,
+          onComplete: () => tabsNav.classList.add("hide-chatbot")
+        });
       },
       onLeave: () => {
-        toggleY(tabsNav, 150);
         tabsNav.classList.remove("hide-chatbot");
+        gsap.to(tabsNav, {
+          yPercent: 100,
+          duration: 0.3
+        });
       },
       onEnterBack: () => {
-        toggleY(tabsNav, 0);
-        tabsNav.classList.add("hide-chatbot");
+        gsap.to(tabsNav, {
+          yPercent: 0,
+          duration: 0.3,
+          onComplete: () => tabsNav.classList.add("hide-chatbot")
+        });
       },
       onLeaveBack: () => {
-        toggleY(tabsNav, 150);
         tabsNav.classList.remove("hide-chatbot");
+        gsap.to(tabsNav, {
+          yPercent: 100,
+          duration: 0.3
+        });
       },
     });
+
+    return () => {
+      // Cleanup function when breakpoint changes
+      scrollTrigger.kill();
+      gsap.set(tabsNav, { yPercent: 0 });
+    };
   });
 
   // Pin service tab menu on scroll
-  ScrollTrigger.create({
+  const pinTrigger = ScrollTrigger.create({
     trigger: tabsNav,
     start: "top 4rem",
-    onEnter: () => tabsNav?.classList.add("is-fixed"),
-    onLeaveBack: () => tabsNav?.classList.remove("is-fixed"),
+    onEnter: () => {
+      gsap.to(tabsNav, {
+        y: 0,
+        onComplete: () => tabsNav?.classList.add("is-fixed")
+      });
+    },
+    onLeaveBack: () => {
+      tabsNav?.classList.remove("is-fixed");
+      // Reset position if not already handled by other triggers
+      if (!ScrollTrigger.isInViewport(tabsNav)) {
+        gsap.set(tabsNav, { y: 0 });
+      }
+    },
+  });
+
+  // Ensure pin trigger is killed when matchMedia changes
+  mm.add("(min-width: 768px)", () => {
+    return () => pinTrigger.kill();
   });
 
   // Desktop scroll interactions
   mm.add("(min-width: 768px)", () => {
     if (!serviceSection || !tabsNav || !nav) return;
 
-    ScrollTrigger.create({
+    // Clean up any existing animations
+    gsap.killTweensOf([tabsNav, nav]);
+    ScrollTrigger.getAll().forEach(t => 
+      [tabsNav, nav].includes(t.trigger) && t.kill()
+    );
+
+    const tabsScrollTrigger = ScrollTrigger.create({
       trigger: serviceSection,
-      start: "bottom 70%",
-      end: "70% bottom",
-      onLeave: () => gsap.to(tabsNav, { y: "-250%" }),
-      onEnterBack: () => gsap.to(tabsNav, { y: "0%" }),
+      start: "bottom bottom",
+      end: "bottom bottom",
+      onLeave: () => gsap.to(tabsNav, { 
+        y: "-100%",
+        duration: 0.3
+      }),
+      onEnterBack: () => gsap.to(tabsNav, { 
+        y: "0%",
+        duration: 0.3
+      }),
     });
 
-    ScrollTrigger.create({
+    const navScrollTrigger = ScrollTrigger.create({
       trigger: serviceSection,
       start: "top center",
       end: "bottom top",
-      onEnter: () => toggleY(nav, -150),
-      onLeave: () => toggleY(nav, 0),
-      onEnterBack: () => toggleY(nav, -150),
-      onLeaveBack: () => toggleY(nav, 0),
+      onEnter: () => gsap.to(nav, { 
+        yPercent: -100,
+        duration: 0.3
+      }),
+      onLeave: () => gsap.to(nav, { 
+        yPercent: 0,
+        duration: 0.3
+      }),
+      onEnterBack: () => gsap.to(nav, { 
+        yPercent: -100,
+        duration: 0.3
+      }),
+      onLeaveBack: () => gsap.to(nav, { 
+        yPercent: 0,
+        duration: 0.3
+      }),
     });
+
+    return () => {
+      // Cleanup function when breakpoint changes
+      tabsScrollTrigger.kill();
+      navScrollTrigger.kill();
+      gsap.set([tabsNav, nav], { y: 0, yPercent: 0 });
+    };
   });
 
   // Tab background animation using Flip
