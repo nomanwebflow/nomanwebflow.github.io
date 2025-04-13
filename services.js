@@ -97,7 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Clean up any existing animations
     gsap.killTweensOf(tabsNav);
-    ScrollTrigger.getAll().forEach(t => t.trigger === tabsNav && t.kill());
+    ScrollTrigger.getAll().forEach((t) => t.trigger === tabsNav && t.kill());
 
     // Initialize position with more reasonable values
     gsap.set(tabsNav, { yPercent: 100 });
@@ -110,29 +110,29 @@ document.addEventListener("DOMContentLoaded", () => {
       onEnter: () => {
         gsap.to(tabsNav, {
           yPercent: 0,
-          duration: 0.3,
-          onComplete: () => tabsNav.classList.add("hide-chatbot")
+
+          onComplete: () => tabsNav.classList.add("hide-chatbot"),
         });
       },
       onLeave: () => {
         tabsNav.classList.remove("hide-chatbot");
         gsap.to(tabsNav, {
           yPercent: 100,
-          duration: 0.3
+          duration: 0.3,
         });
       },
       onEnterBack: () => {
         gsap.to(tabsNav, {
           yPercent: 0,
-          duration: 0.3,
-          onComplete: () => tabsNav.classList.add("hide-chatbot")
+
+          onComplete: () => tabsNav.classList.add("hide-chatbot"),
         });
       },
       onLeaveBack: () => {
         tabsNav.classList.remove("hide-chatbot");
         gsap.to(tabsNav, {
           yPercent: 100,
-          duration: 0.3
+          duration: 0.3,
         });
       },
     });
@@ -151,7 +151,7 @@ document.addEventListener("DOMContentLoaded", () => {
     onEnter: () => {
       gsap.to(tabsNav, {
         y: 0,
-        onComplete: () => tabsNav?.classList.add("is-fixed")
+        onComplete: () => tabsNav?.classList.add("is-fixed"),
       });
     },
     onLeaveBack: () => {
@@ -163,55 +163,56 @@ document.addEventListener("DOMContentLoaded", () => {
     },
   });
 
-  // Ensure pin trigger is killed when matchMedia changes
-  mm.add("(min-width: 768px)", () => {
-    return () => pinTrigger.kill();
-  });
-
   // Desktop scroll interactions
   mm.add("(min-width: 768px)", () => {
     if (!serviceSection || !tabsNav || !nav) return;
 
     // Clean up any existing animations
     gsap.killTweensOf([tabsNav, nav]);
-    ScrollTrigger.getAll().forEach(t => 
-      [tabsNav, nav].includes(t.trigger) && t.kill()
+    ScrollTrigger.getAll().forEach(
+      (t) => [tabsNav, nav].includes(t.trigger) && t.kill()
     );
 
     const tabsScrollTrigger = ScrollTrigger.create({
       trigger: serviceSection,
       start: "bottom bottom",
       end: "bottom bottom",
-      onLeave: () => gsap.to(tabsNav, { 
-        y: "-100%",
-        duration: 0.3
-      }),
-      onEnterBack: () => gsap.to(tabsNav, { 
-        y: "0%",
-        duration: 0.3
-      }),
+      onLeave: () =>
+        gsap.to(tabsNav, {
+          y: "-100%",
+          duration: 0.3,
+        }),
+      onEnterBack: () =>
+        gsap.to(tabsNav, {
+          y: "0%",
+          duration: 0.3,
+        }),
     });
 
     const navScrollTrigger = ScrollTrigger.create({
       trigger: serviceSection,
       start: "top center",
       end: "bottom top",
-      onEnter: () => gsap.to(nav, { 
-        yPercent: -100,
-        duration: 0.3
-      }),
-      onLeave: () => gsap.to(nav, { 
-        yPercent: 0,
-        duration: 0.3
-      }),
-      onEnterBack: () => gsap.to(nav, { 
-        yPercent: -100,
-        duration: 0.3
-      }),
-      onLeaveBack: () => gsap.to(nav, { 
-        yPercent: 0,
-        duration: 0.3
-      }),
+      onEnter: () =>
+        gsap.to(nav, {
+          yPercent: -100,
+          duration: 0.3,
+        }),
+      onLeave: () =>
+        gsap.to(nav, {
+          yPercent: 0,
+          duration: 0.3,
+        }),
+      onEnterBack: () =>
+        gsap.to(nav, {
+          yPercent: -100,
+          duration: 0.3,
+        }),
+      onLeaveBack: () =>
+        gsap.to(nav, {
+          yPercent: 0,
+          duration: 0.3,
+        }),
     });
 
     return () => {
