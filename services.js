@@ -184,3 +184,4 @@ function removeHash() {
       if (current) moveBgTo(current);
     });
   });
+  
